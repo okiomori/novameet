@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -8,24 +9,54 @@
 body {
   margin: 0;
   font-family: Inter, sans-serif;
-  background: linear-gradient(135deg,#dbe4ff,#f3dcff);
+  background: linear-gradient(135deg,#dbe4ff,#f3dcff,#ffe0f0);
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
-.container {
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(20px);
+/* blobs */
+.blob {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle,#ff7ad9,#7afcff);
+  filter: blur(120px);
+  border-radius: 50%;
+  animation: move 10s infinite alternate ease-in-out;
+}
+
+.blob2 {
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle,#7a9cff,#ff9cf0);
+}
+
+@keyframes move {
+  from { transform: translate(0,0); }
+  to { transform: translate(50px,-50px); }
+}
+
+.card {
+  position: relative;
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(25px);
   border-radius: 30px;
   padding: 40px;
-  width: 400px;
+  width: 420px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  z-index: 2;
 }
 
 h1 {
-  margin: 0 0 10px;
+  margin: 0;
+  font-size: 32px;
+}
+
+p {
+  color: #666;
 }
 
 input {
@@ -34,6 +65,7 @@ input {
   margin-top: 10px;
   border-radius: 12px;
   border: none;
+  outline: none;
 }
 
 button {
@@ -43,8 +75,14 @@ button {
   border-radius: 14px;
   border: none;
   color: white;
-  background: linear-gradient(135deg,#6a5cff,#9b7bff);
+  font-weight: 600;
   cursor: pointer;
+  background: linear-gradient(135deg,#6a5cff,#9b7bff);
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.02);
 }
 
 .video-grid {
@@ -60,26 +98,32 @@ video {
   background: black;
 }
 </style>
+
 </head>
 
 <body>
 
-<div class="container">
+<div class="blob"></div>
+<div class="blob blob2"></div>
+
+<div class="card">
   <h1>NovaMeet</h1>
+  <p>Созвоны прямо в браузере</p>
 
   <input id="name" placeholder="Ваше имя">
   <input id="room" placeholder="Комната">
 
-  <button onclick="startCall()">Войти</button>
+<button onclick="startCall()">Войти в комнату</button>
 
   <div class="video-grid" id="videos"></div>
 </div>
 
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
 <script src="https://unpkg.com/simple-peer@9/simplepeer.min.js"></script>
 
 <script>
-const socket = io("http://localhost:3001"); // потом заменим
+const socket = io("https://novameet-ktl5.onrender.com");
 
 let peers = {};
 let myStream;
@@ -87,6 +131,11 @@ let myStream;
 async function startCall() {
   const room = document.getElementById("room").value;
   const name = document.getElementById("name").value;
+
+  if (!room) {
+    alert("Введите комнату");
+    return;
+  }
 
   myStream = await navigator.mediaDevices.getUserMedia({
     video: true,
@@ -164,7 +213,6 @@ function addVideo(stream, muted = false) {
   video.autoplay = true;
   video.muted = muted;
   document.getElementById("videos").appendChild(video);
-  const socket = io("https://novameet-ktl5.onrender.com");
 }
 </script>
 
