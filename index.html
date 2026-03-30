@@ -164,6 +164,7 @@ function addVideo(stream, muted = false) {
   video.autoplay = true;
   video.muted = muted;
   document.getElementById("videos").appendChild(video);
+  const socket = io("https://novameet-ktl5.onrender.com");
 }
 </script>
 
