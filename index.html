@@ -16,7 +16,7 @@ body {
 }
 
 .container {
-  background: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.6);
   backdrop-filter: blur(20px);
   border-radius: 30px;
   padding: 40px;
@@ -28,17 +28,12 @@ h1 {
   margin: 0 0 10px;
 }
 
-p {
-  color: #666;
-}
-
 input {
   width: 100%;
   padding: 14px;
   margin-top: 10px;
   border-radius: 12px;
   border: none;
-  outline: none;
 }
 
 button {
@@ -48,9 +43,8 @@ button {
   border-radius: 14px;
   border: none;
   color: white;
-  font-weight: 600;
-  cursor: pointer;
   background: linear-gradient(135deg,#6a5cff,#9b7bff);
+  cursor: pointer;
 }
 
 .video-grid {
@@ -71,25 +65,21 @@ video {
 <body>
 
 <div class="container">
-
   <h1>NovaMeet</h1>
-  <p>Созвоны прямо в браузере</p>
 
   <input id="name" placeholder="Ваше имя">
   <input id="room" placeholder="Комната">
 
-  <button onclick="startCall()">Войти в комнату</button>
+  <button onclick="startCall()">Войти</button>
 
   <div class="video-grid" id="videos"></div>
-
 </div>
 
-<!-- LIBS -->
-<script src="https://unpkg.com/simple-peer@9/simplepeer.min.js"></script>
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script src="https://unpkg.com/simple-peer@9/simplepeer.min.js"></script>
 
 <script>
-const socket = io("http://localhost:3001"); // ПОТОМ ЗАМЕНИМ НА RENDER
+const socket = io("http://localhost:3001"); // потом заменим
 
 let peers = {};
 let myStream;
